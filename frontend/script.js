@@ -1,7 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   let items = [];
   const HISTORY_KEY = "cartHistory";
-  const API_BASE = "https://kioty.onrender.com"; // change to your backend URL if needed
+  const isLocal = window.location.hostname === "localhost" ||
+                  window.location.hostname === "127.0.0.1" ||
+                  window.location.protocol === "file:" ||
+                  !window.location.hostname;
+  const API_BASE = isLocal ? "http://localhost:5050" : "https://kioty.onrender.com";
 
   // DOM helpers
   const $ = (id) => document.getElementById(id);

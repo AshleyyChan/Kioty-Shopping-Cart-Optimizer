@@ -1,17 +1,20 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.db
+# Java build outputs
+target/
+bin/
+*.class
+*.jar
+*.war
+*.ear
 
-# Virtual environments
-venv/
-.venv/
-backend/venv/
-backend/.venv/
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
 
-# Environment variables
+# Environment & Config
 .env
 *.env
 
@@ -19,6 +22,6 @@ backend/.venv/
 logs/
 *.log
 
-# OS files
+# OS generated files
 .DS_Store
 Thumbs.db

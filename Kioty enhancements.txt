@@ -1,0 +1,83 @@
+Kioty enhancements
+🎨 UI / UX Enhancements
+Animated Item Additions
+
+When an item is added, make it slide into the cart list instead of instantly appearing.
+
+When removed, animate it fading/shrinking out.
+
+Dark Mode Glow
+
+Add subtle neon/glow effects in dark mode for buttons and text.
+
+Card Hover Effects
+
+Slight scaling and shadow color change when hovering over result cards.
+
+Progress Bar for Budget
+
+Show a dynamic progress bar that fills as the budget gets used.
+
+Item Images
+
+Allow optional image upload for each item and display thumbnails in the cart.
+
+⚡ Functionality Upgrades
+Discount Simulation
+
+Add a discount percentage field for each item.
+
+Algorithm uses discounted price when optimizing.
+
+Save / Load Cart
+
+Use localStorage so the cart stays even after refreshing.
+
+Sorting & Filtering
+
+Sort items by price, value, or best ratio.
+
+Filter by category (e.g., essentials, luxury, etc.).
+
+Multiple Algorithms
+
+Let users choose:
+
+Greedy (current method — ratio-based)
+
+Knapsack Dynamic Programming (exact max value within budget)
+
+Value Priority (pure importance ranking)
+
+Download as PDF
+
+Allow export of the optimized cart as a PDF shopping list.
+
+📊 Data Visualization
+Chart.js / ApexCharts Integration
+
+Pie chart: % of budget spent on each item.
+
+Bar chart: Item value vs price.
+
+Value/Price Heatmap
+
+Quick color-coded indicator to see best value items.
+
+💡 Extra Cool Features
+AI Suggestions (Future)
+
+Suggest items based on budget & past selections.
+
+Gamification
+
+Award “Smart Shopper” badges for efficient spending.
+
+Real-time Price Fetching
+
+Auto-fetch prices from Amazon/Flipkart APIs for given items.
+
+Voice Commands
+
+“Add milk, price 40, value 8” → adds item instantly.
+
