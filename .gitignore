@@ -18,7 +18,7 @@ bin/
 .env
 *.env
 
-# Logs
+# Logs & Runtime data
 logs/
 *.log
 
