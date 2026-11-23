@@ -159,6 +159,12 @@ public class AppTest {
         good.put("items", Collections.singletonList(goodItem));
         assertEquals("", Validator.validateInput(good), "Valid input should return empty string");
 
+        // Excess budget
+        Map<String, Object> badBudgetLimit = new HashMap<>();
+        badBudgetLimit.put("budget", 20_000_000);
+        badBudgetLimit.put("items", Collections.singletonList(goodItem));
+        assertEquals("Budget exceeds maximum allowable limit of 10,000,000.", Validator.validateInput(badBudgetLimit), "Excess budget limit error");
+
         System.out.println("PASSED ✅");
     }
 

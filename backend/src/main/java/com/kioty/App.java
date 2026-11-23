@@ -125,8 +125,16 @@ public class App {
 
             String path = exchange.getRequestURI().getPath();
 
-            // Direct root path -> Health Check
+            // Direct root path -> Health Check or Serve Index if requested by browser
             if ("/".equals(path) || path.isEmpty()) {
+                String accept = exchange.getRequestHeaders().getFirst("Accept");
+                if (accept != null && accept.contains("text/html")) {
+                    File indexFile = findFrontendFile("index.html");
+                    if (indexFile != null && indexFile.exists()) {
+                        serveStaticFile(exchange, indexFile);
+                        return;
+                    }
+                }
                 sendTextResponse(exchange, 200, "🟢 Shopping Cart Optimizer API is running.", "text/plain; charset=utf-8");
                 return;
             }
@@ -147,11 +155,25 @@ public class App {
             if (path.startsWith("/")) path = path.substring(1);
             if (path.startsWith("frontend/")) path = path.substring("frontend/".length());
 
+            // Prevent path traversal
+            if (path.contains("..") || path.contains(":") || path.contains("\\")) {
+                return null;
+            }
+
             File file1 = new File("frontend", path);
             if (file1.exists()) return file1;
 
             File file2 = new File("../frontend", path);
             if (file2.exists()) return file2;
+
+            // Try with .html extension for friendly URLs
+            if (!path.contains(".")) {
+                File html1 = new File("frontend", path + ".html");
+                if (html1.exists()) return html1;
+
+                File html2 = new File("../frontend", path + ".html");
+                if (html2.exists()) return html2;
+            }
 
             return null;
         }
@@ -165,6 +187,8 @@ public class App {
             else if (name.endsWith(".png")) mime = "image/png";
             else if (name.endsWith(".jpg") || name.endsWith(".jpeg")) mime = "image/jpeg";
             else if (name.endsWith(".svg")) mime = "image/svg+xml";
+            else if (name.endsWith(".ico")) mime = "image/x-icon";
+            else if (name.endsWith(".json")) mime = "application/json; charset=utf-8";
 
             setCorsHeaders(exchange);
             exchange.getResponseHeaders().set("Content-Type", mime);

@@ -3,133 +3,221 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to KIOTY</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>KIOTY — Smart Shopping Cart Optimizer</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: #fff;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #4f46e5 0%, #1e1b4b 50%, #0f172a 100%);
+      color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       overflow-x: hidden;
+      padding: 2rem 1.5rem;
+    }
+
+    .badge-hero {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.8s ease-out;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      animation: slideDown 1s ease-out;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      text-align: center;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: slideDown 0.8s ease-out;
     }
 
     p.description {
-      font-size: 1.2rem;
-      max-width: 600px;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      max-width: 650px;
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 2.5rem;
       line-height: 1.6;
-      animation: fadeIn 2s ease-out;
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 15px;
-      width: 250px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 25px rgba(0,0,0,0.3);
-    }
-
-    .feature-card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      font-size: 0.95rem;
-      line-height: 1.4;
+      color: #e2e8f0;
+      animation: fadeIn 1.2s ease-out;
     }
 
     .features {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 40px;
+      gap: 1.5rem;
+      max-width: 950px;
+      margin-bottom: 3rem;
     }
 
-    button {
-      padding: 12px 30px;
+    .feature-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 280px;
+      backdrop-filter: blur(14px);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .btn-cta {
+      padding: 14px 34px;
       border: none;
       border-radius: 50px;
-      background: #fff;
-      color: #6a11cb;
-      font-weight: 600;
-      font-size: 1rem;
+      background: #ffffff;
+      color: #4f46e5;
+      font-weight: 700;
+      font-size: 1.05rem;
       cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
-    button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      background: #f8fafc;
+    }
+
+    .btn-cta-secondary {
+      padding: 14px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .btn-cta-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .footer-note {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-align: center;
     }
 
     @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes slideDown {
-      from {opacity: 0; transform: translateY(-30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    .emoji {
-      font-size: 1.5rem;
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to KIOTY 🚀</h1>
+
+  <div class="badge-hero">🚀 Pure Java 21 • 0/1 Knapsack Optimizer</div>
+
+  <h1>Smart Shopping, Max Value.</h1>
   <p class="description">
-    KIOTY is your smart shopping assistant! 🛒<br>
-    It helps you maximize value within your budget. Add your items, set a budget, and let our algorithm pick the best combination so you save money while getting the most value.
+    Tired of choosing what fits your budget? KIOTY mathematically selects the highest-value combination of items within your spending limit using Dynamic Programming.
   </p>
 
   <div class="features">
     <div class="feature-card">
-      <h3>📦 Add Items</h3>
-      <p>Enter all the items you want to buy with their price and importance. KIOTY keeps track of everything in a neat list.</p>
+      <div class="feature-icon">📦</div>
+      <h3>Add Wishlist Items</h3>
+      <p>Enter items with their price and importance score (1–10). Build your wish cart easily with real-time budget tracking.</p>
     </div>
     <div class="feature-card">
-      <h3>🎯 Optimize Cart</h3>
-      <p>Set your budget and let KIOTY select the most important items that fit within your budget. Smart shopping made easy!</p>
+      <div class="feature-icon">⚡</div>
+      <h3>0/1 Knapsack DP</h3>
+      <p>Powered by an exact dynamic programming algorithm that guarantees the mathematically optimal cart selection under your budget.</p>
     </div>
     <div class="feature-card">
-      <h3>📊 Track History</h3>
-      <p>All your past optimizations are saved. Compare different carts, budgets, and make informed shopping decisions.</p>
+      <div class="feature-icon">📜</div>
+      <h3>Persistent History</h3>
+      <p>Past sessions are automatically archived on the Java backend and in your browser so you can compare multiple budgets anytime.</p>
     </div>
   </div>
 
-  <button onclick="goToApp()">Go to App →</button>
+  <div class="cta-container">
+    <a href="app.html" class="btn-cta">Launch Optimizer →</a>
+    <a href="history.html" class="btn-cta-secondary">View Past Sessions</a>
+  </div>
 
-  <script>
-    function goToApp() {
-      window.location.href = "app.html"; // main app page
-    }
-  </script>
+  <p class="footer-note">
+    Built with Pure Java 21 Virtual Threads & Zero External Dependencies
+  </p>
+
 </body>
 </html>

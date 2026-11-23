@@ -3,161 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🕓 Optimization History</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Optimization History — KIOTY</title>
+  
+  <!-- Google Fonts & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    body {
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    /* Dark Mode */
-    body.dark {
-      background-color: #121212;
-      color: #f1f1f1;
-    }
-
-    /* Session Card */
-    .session-card {
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      margin-bottom: 1rem;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeSlideIn 0.4s ease forwards;
-      background-color: #ffffff;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .session-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-    }
-
-    /* Dark mode card with glow */
-    body.dark .session-card {
-      background-color: #1e1e1e;
-      color: #f1f1f1;
-      border: 1px solid #333;
-      box-shadow: 0 0 10px rgba(0, 255, 180, 0.15);
-    }
-
-    /* Glow for headings in dark mode */
-    body.dark h5 {
-      text-shadow: 0 0 4px rgba(0, 255, 180, 0.6);
-    }
-
-    /* Item List */
-    .list-group-item {
-      background: transparent;
-      border: none;
-      padding: 6px 0;
-    }
-
-    body.dark .list-group-item {
-      color: #ddd;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    /* Fade + slide animation */
-    @keyframes fadeSlideIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Loader */
-    #loader {
-      color: inherit;
-    }
-
-    /* Empty State */
-    .empty-message {
-      text-align: center;
-      margin-top: 2rem;
-      font-style: italic;
-      opacity: 0.8;
-    }
-  </style>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="light">
+<body>
 
-  <div class="container py-4">
+  <div class="container py-4" style="max-width: 900px;">
+
+    <!-- NAVBAR -->
+    <header class="navbar-custom d-flex justify-content-between align-items-center mb-4">
+      <a href="index.html" class="d-flex align-items-center text-decoration-none text-reset">
+        <span class="fs-4 me-2">🛒</span>
+        <span class="fw-bold fs-4 tracking-tight">KIOTY</span>
+        <span class="badge bg-info-subtle text-info ms-2 px-2 py-1 small rounded-pill border border-info-subtle">History</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-3">
+        <a href="index.html" class="nav-link-custom d-none d-sm-inline">🏠 Home</a>
+        <a href="app.html" class="nav-link-custom">🛒 Cart</a>
+        <a href="history.html" class="nav-link-custom active">📜 History</a>
+
+        <div class="form-check form-switch ms-2 mb-0">
+          <input class="form-check-input" type="checkbox" id="themeToggle" role="switch" title="Toggle dark mode">
+          <label class="form-check-label small fw-semibold d-none d-md-inline" for="themeToggle">Dark</label>
+        </div>
+      </div>
+    </header>
+
+    <!-- HEADER BAR -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>📜 Optimization History</h2>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="themeToggle" />
-        <label class="form-check-label" for="themeToggle">Dark Mode</label>
+      <div>
+        <h3 class="fw-bold mb-1">📜 Optimization History</h3>
+        <p class="text-muted small mb-0">Past cart optimization runs retrieved from the backend archive and local storage.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="app.html" class="btn btn-sm btn-add">➕ New Cart</a>
+        <button id="clearHistoryBtn" class="btn btn-sm btn-secondary-custom">Clear</button>
       </div>
     </div>
 
+    <!-- SESSIONS CONTAINER -->
     <div id="historyContainer"></div>
 
-    <div id="loader" class="text-center my-4" style="display: none;">
+    <!-- LOADER -->
+    <div id="loader" class="text-center my-5" style="display: none;">
       <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2">Loading history...</p>
+      <p class="mt-2 text-muted small">Loading archived sessions...</p>
     </div>
+
   </div>
 
   <script>
-    const historyContainer = document.getElementById("historyContainer");
-    const themeToggle = document.getElementById("themeToggle");
-    const loader = document.getElementById("loader");
-    const body = document.body;
+    document.addEventListener("DOMContentLoaded", () => {
+      const historyContainer = document.getElementById("historyContainer");
+      const themeToggle = document.getElementById("themeToggle");
+      const loader = document.getElementById("loader");
+      const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+      const body = document.body;
 
-    // Theme toggle
-    themeToggle.addEventListener("change", () => {
-      body.classList.toggle("dark");
-      body.classList.toggle("light");
-    });
+      // Theme sync
+      const savedTheme = localStorage.getItem("theme") || "light";
+      if (savedTheme === "dark") {
+        body.classList.add("dark");
+        if (themeToggle) themeToggle.checked = true;
+      }
 
-    // Load history from backend
-    async function loadHistory() {
-      loader.style.display = "block";
-      try {
-        const isLocal = window.location.hostname === "localhost" ||
-                        window.location.hostname === "127.0.0.1" ||
-                        window.location.protocol === "file:" ||
-                        !window.location.hostname;
-        const API_BASE = isLocal ? "http://localhost:5050" : "https://kioty.onrender.com";
-        const response = await fetch(`${API_BASE}/history`);
-        const data = await response.json();
+      if (themeToggle) {
+        themeToggle.addEventListener("change", () => {
+          const isDark = themeToggle.checked;
+          body.classList.toggle("dark", isDark);
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+      }
+
+      // Clear history button
+      if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener("click", () => {
+          if (confirm("Are you sure you want to clear your local history view?")) {
+            localStorage.removeItem("cartHistory");
+            loadHistory();
+          }
+        });
+      }
+
+      async function loadHistory() {
+        loader.style.display = "block";
+        historyContainer.innerHTML = "";
+
+        const isLocal =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1" ||
+          window.location.protocol === "file:" ||
+          !window.location.hostname;
+
+        const API_BASE = isLocal
+          ? (window.location.port === "5050" ? window.location.origin : "http://localhost:5050")
+          : "https://kioty.onrender.com";
+
+        let sessions = [];
+
+        // 1. Try fetching from Backend API
+        try {
+          const response = await fetch(`${API_BASE}/history`, { signal: AbortSignal.timeout(3500) });
+          if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data.history) && data.history.length > 0) {
+              sessions = data.history;
+            }
+          }
+        } catch (err) {
+          console.warn("Backend /history unreachable, falling back to localStorage:", err);
+        }
+
+        // 2. Fallback to LocalStorage if backend returned nothing or failed
+        if (!sessions.length) {
+          try {
+            const local = JSON.parse(localStorage.getItem("cartHistory"));
+            if (Array.isArray(local) && local.length > 0) {
+              sessions = local;
+            }
+          } catch (e) {
+            sessions = [];
+          }
+        }
+
         loader.style.display = "none";
 
-        if (!data.history || data.history.length === 0) {
-          historyContainer.innerHTML = "<p class='empty-message'>No history available yet.</p>";
+        if (!sessions.length) {
+          historyContainer.innerHTML = `
+            <div class="card p-5 text-center text-muted border-0 shadow-sm">
+              <div class="fs-1 mb-2">📭</div>
+              <h5 class="fw-semibold">No Optimization History Yet</h5>
+              <p class="small mb-3">Optimize a cart on the main page to see your archived recommendations here.</p>
+              <div>
+                <a href="app.html" class="btn btn-add btn-sm">Go to Cart Optimizer →</a>
+              </div>
+            </div>
+          `;
           return;
         }
 
-        data.history.forEach((session, i) => {
+        sessions.slice().reverse().forEach((session, i) => {
           const div = document.createElement("div");
-          div.className = "card session-card p-3";
+          div.className = "card session-card mb-3";
+
+          const dateStr = session.timestamp
+            ? new Date(session.timestamp).toLocaleString()
+            : (session.date || "Unknown date");
+
+          const itemsList = session.selectedItems || session.items || [];
+          const count = session.count || itemsList.length;
 
           div.innerHTML = `
-            <h5>Session #${i + 1} — <code>${session.sessionId}</code></h5>
-            <p><strong>Date:</strong> ${new Date(session.timestamp).toLocaleString()}</p>
-            <p><strong>Budget:</strong> ₹${session.budget}</p>
-            <p><strong>Total Price:</strong> ₹${session.totalPrice}</p>
-            <p><strong>Total Value:</strong> ₹${session.totalValue}</p>
-            <p><strong>Items Selected:</strong> ${session.count}</p>
-            <ul class="list-group mt-2">
-              ${session.selectedItems.map(item =>
-                `<li class="list-group-item">${item.name} — ₹${item.price}, Value: ${item.value}</li>`).join("")}
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h5 class="fw-bold mb-0">Session <code class="text-primary">#${session.sessionId || (i + 1)}</code></h5>
+                <span class="text-muted small">${dateStr}</span>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">
+                ${count} ${count === 1 ? 'item' : 'items'} chosen
+              </span>
+            </div>
+
+            <div class="row g-2 my-2 py-2 border-top border-bottom">
+              <div class="col-4">
+                <span class="small text-muted d-block">Budget</span>
+                <strong class="fs-6">₹${session.budget}</strong>
+              </div>
+              <div class="col-4">
+                <span class="small text-muted d-block">Total Spent</span>
+                <strong class="fs-6 text-primary">₹${session.totalPrice}</strong>
+              </div>
+              <div class="col-4">
+                <span class="small text-muted d-block">Total Importance</span>
+                <strong class="fs-6 text-success">${session.totalValue}</strong>
+              </div>
+            </div>
+
+            <h6 class="small fw-semibold text-muted mt-3 mb-2">Selected Items:</h6>
+            <ul class="list-group list-group-flush mb-0">
+              ${itemsList.length ? itemsList.map(item => `
+                <li class="list-group-item py-1 px-0 d-flex justify-content-between align-items-center">
+                  <span>${escapeHtml(item.name)} — <span class="text-muted">₹${item.price}</span></span>
+                  <span class="badge bg-secondary-subtle text-secondary small">Value: ${item.value}/10</span>
+                </li>
+              `).join("") : '<li class="list-group-item py-1 px-0 text-muted">No items selected within budget.</li>'}
             </ul>
           `;
+
           historyContainer.appendChild(div);
         });
-
-      } catch (err) {
-        loader.style.display = "none";
-        console.error("Failed to fetch history:", err);
-        historyContainer.innerHTML = "<p class='text-danger text-center'>⚠ Failed to load history.</p>";
       }
-    }
 
-    loadHistory();
+      function escapeHtml(str) {
+        if (!str) return "";
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      loadHistory();
+    });
   </script>
 </body>
 </html>

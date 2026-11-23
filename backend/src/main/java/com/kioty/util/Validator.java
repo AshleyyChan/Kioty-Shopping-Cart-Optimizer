@@ -23,6 +23,11 @@ public class Validator {
             return "Budget must be a positive integer.";
         }
 
+        int budget = toInt(data.get("budget"));
+        if (budget > 10_000_000) {
+            return "Budget exceeds maximum allowable limit of 10,000,000.";
+        }
+
         if (!data.containsKey("items") || !(data.get("items") instanceof List)) {
             return "Items must be a non-empty list.";
         }
